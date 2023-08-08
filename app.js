@@ -5,15 +5,15 @@ const app = express(); //  app initialized and server ready
 
 app.use(express.static('public'));
 
-let port = 8080;
+let port = process.env.PORT || 8080;
 let server = app.listen(port, () => {
-  console.log('listening to port ' + port);
+//   console.log('listening to port ' + port);
 });
 
 let io = socket(server);
 
 io.on('connection', (socket) => {
-  console.log('socket connnection successful');
+  //   console.log('socket connnection successful');
 
   // received data
   socket.on('beginPath', (data) => {

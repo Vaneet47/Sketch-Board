@@ -67,7 +67,7 @@ canvas.addEventListener('mouseup', (e) => {
   let url = canvas.toDataURL();
   undoRedoTracker.push(url);
   track = undoRedoTracker.length - 1;
-  console.log(track);
+  // console.log(track);
 });
 
 function beginPath(strokeObj) {
@@ -137,7 +137,7 @@ function undoRedoAction(trackObj) {
 
   let img = new Image(); // new image reference element
   img.src = undoRedoTracker[track];
-  console.log(canvas.width, canvas.height);
+  // console.log(canvas.width, canvas.height);
   img.onload = (e) => {
     tool.drawImage(img, 0, 0, canvas.width, canvas.height);
   };
