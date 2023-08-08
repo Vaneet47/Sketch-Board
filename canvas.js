@@ -28,37 +28,41 @@ tool.lineWidth = penWidth;
 
 canvas.addEventListener('mousedown', (e) => {
   mouseDown = true;
-  // beginPath({
-  //   x: e.clientX,
-  //   y: e.clientY,
-  // });
-  let data = {
+  beginPath({
     x: e.clientX,
     y: e.clientY,
-  };
+  });
+  // pencil.style.display = 'none';
+  // pencilFlag = false;
+  // eraser.style.display = 'none';
+  // eraserFlag = false;
+  // let data = {
+  //   x: e.clientX,
+  //   y: e.clientY,
+  // };
   // send data to server
-  socket.emit('beginPath', data);
+  // socket.emit('beginPath', data);
 });
 
 canvas.addEventListener('mousemove', (e) => {
-  if (mouseDown) {
-    let data = {
-      x: e.clientX,
-      y: e.clientY,
-      color: eraserFlag ? eraserColor : penColor,
-      width: eraserFlag ? eraserWidth : penWidth,
-    };
-
-    socket.emit('drawStroke', data);
-  }
   // if (mouseDown) {
-  //   drawStroke({
+  //   let data = {
   //     x: e.clientX,
   //     y: e.clientY,
   //     color: eraserFlag ? eraserColor : penColor,
   //     width: eraserFlag ? eraserWidth : penWidth,
-  //   });
+  //   };
+
+  //   socket.emit('drawStroke', data);
   // }
+  if (mouseDown) {
+    drawStroke({
+      x: e.clientX,
+      y: e.clientY,
+      color: eraserFlag ? eraserColor : penColor,
+      width: eraserFlag ? eraserWidth : penWidth,
+    });
+  }
 });
 
 canvas.addEventListener('mouseup', (e) => {
@@ -127,8 +131,8 @@ undoIcon.addEventListener('click', (e) => {
     trackValue: track,
     undoRedoTracker,
   };
-  // undoRedoAction(trackObj);
-  socket.emit('redoUndo', data);
+  undoRedoAction(data);
+  // socket.emit('redoUndo', data);
 });
 
 function undoRedoAction(trackObj) {
@@ -150,8 +154,8 @@ redoIcon.addEventListener('click', (e) => {
     trackValue: track,
     undoRedoTracker,
   };
-  // undoRedoAction(trackObj);
-  socket.emit('redoUndo', data);
+  undoRedoAction(data);
+  // socket.emit('redoUndo', data);
 });
 
 // tool.beginPath(); // new graphic (path) (line)
@@ -164,16 +168,3 @@ redoIcon.addEventListener('click', (e) => {
 // tool.moveTo(100, 1040);
 // tool.lineTo(200, 250);
 // tool.fill();
-
-socket.on('beginPath', (data) => {
-  // data from server
-  beginPath(data);
-});
-
-socket.on('drawStroke', (data) => {
-  drawStroke(data);
-});
-
-socket.on('redoUndo', (data) => {
-  undoRedoAction(data);
-});
