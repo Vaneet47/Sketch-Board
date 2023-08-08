@@ -34,23 +34,23 @@
       <span class="material-symbols-outlined stickynoteicon">
         sticky_note
       </span>
-      <span class="material-symbols-outlined tool redoUI"> redo </span>
-      <span class="material-symbols-outlined tool undoUI"> undo </span>
+      <span class="material-symbols-outlined tool redoicon"> redo </span>
+      <span class="material-symbols-outlined tool undoicon"> undo </span>
     </div>
 
-      <div class="pencil">
-        <div class="pencil-width-cont">
-          <input type="range" min="2" max="10" value="3" />
-        </div>
-        <div class="pencil-color-cont">
-          <div class="black pencil-color"></div>
-          <div class="red pencil-color"></div>
-          <div class="blue pencil-color"></div>
-        </div>
+    <div class="pencil">
+      <div class="pencil-width-cont">
+        <input type="range" min="2" max="10" value="3" class="pencil-width" />
       </div>
-      <span class="eraser">
-        <input type="range" min="2" max="10" value="3" />
-      </span>
+      <div class="pencil-color-cont">
+        <div class="black pencil-color"></div>
+        <div class="red pencil-color"></div>
+        <div class="blue pencil-color"></div>
+      </div>
+    </div>
+    <span class="eraser">
+      <input type="range" min="2" max="10" value="3" class="eraser-width" />
+    </span>
 
     <!-- <div class="sticky-cont">
         <div class="header-cont">
@@ -62,6 +62,9 @@
             <textarea ></textarea>
         </div>
     </div> -->
+
+    <canvas></canvas>
     <script src="./tools.js"></script>
+    <script src="./canvas.js"></script>
   </body>
 </html>

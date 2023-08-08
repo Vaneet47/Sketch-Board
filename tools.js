@@ -62,9 +62,11 @@ stickynoteicon.addEventListener('click', () => {
 });
 
 uploadIcon.addEventListener('click', (e) => {
+  // open file explorer
   let input = document.createElement('input');
   input.setAttribute('type', 'file');
   input.click();
+  
   input.addEventListener('change', (e) => {
     let file = input.files[0];
     let url = URL.createObjectURL(file);
