@@ -28,21 +28,37 @@ tool.lineWidth = penWidth;
 
 canvas.addEventListener('mousedown', (e) => {
   mouseDown = true;
-  beginPath({
+  // beginPath({
+  //   x: e.clientX,
+  //   y: e.clientY,
+  // });
+  let data = {
     x: e.clientX,
     y: e.clientY,
-  });
+  };
+  // send data to server
+  socket.emit('beginPath', data);
 });
 
 canvas.addEventListener('mousemove', (e) => {
   if (mouseDown) {
-    drawStroke({
+    let data = {
       x: e.clientX,
       y: e.clientY,
       color: eraserFlag ? eraserColor : penColor,
       width: eraserFlag ? eraserWidth : penWidth,
-    });
+    };
+
+    socket.emit('drawStroke', data);
   }
+  // if (mouseDown) {
+  //   drawStroke({
+  //     x: e.clientX,
+  //     y: e.clientY,
+  //     color: eraserFlag ? eraserColor : penColor,
+  //     width: eraserFlag ? eraserWidth : penWidth,
+  //   });
+  // }
 });
 
 canvas.addEventListener('mouseup', (e) => {
@@ -106,14 +122,22 @@ downloadIcon.addEventListener('click', (e) => {
 
 undoIcon.addEventListener('click', (e) => {
   if (track > 0) track--;
-  let url = undoRedoTracker[track];
-  console.log(track);
-  undoRedoAction(url);
+  // let url = undoRedoTracker[track];
+  let data = {
+    trackValue: track,
+    undoRedoTracker,
+  };
+  // undoRedoAction(trackObj);
+  socket.emit('redoUndo', data);
 });
 
-function undoRedoAction(url) {
+function undoRedoAction(trackObj) {
+  track = trackObj.trackValue;
+  undoRedoTracker = trackObj.undoRedoTracker;
+
   let img = new Image(); // new image reference element
-  img.src = url;
+  img.src = undoRedoTracker[track];
+  console.log(canvas.width, canvas.height);
   img.onload = (e) => {
     tool.drawImage(img, 0, 0, canvas.width, canvas.height);
   };
@@ -121,9 +145,13 @@ function undoRedoAction(url) {
 
 redoIcon.addEventListener('click', (e) => {
   if (track < undoRedoTracker.length - 1) track++;
-  let url = undoRedoTracker[track];
-  console.log(track);
-  undoRedoAction(url);
+  // let url = undoRedoTracker[track];
+  let data = {
+    trackValue: track,
+    undoRedoTracker,
+  };
+  // undoRedoAction(trackObj);
+  socket.emit('redoUndo', data);
 });
 
 // tool.beginPath(); // new graphic (path) (line)
@@ -136,3 +164,16 @@ redoIcon.addEventListener('click', (e) => {
 // tool.moveTo(100, 1040);
 // tool.lineTo(200, 250);
 // tool.fill();
+
+socket.on('beginPath', (data) => {
+  // data from server
+  beginPath(data);
+});
+
+socket.on('drawStroke', (data) => {
+  drawStroke(data);
+});
+
+socket.on('redoUndo', (data) => {
+  undoRedoAction(data);
+});
